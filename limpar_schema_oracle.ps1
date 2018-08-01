@@ -48,6 +48,12 @@ where owner in ('${schema}');
 SELECT 'PURGE TABLE ' || OWNER || '."' || ORIGINAL_NAME  || '";'
 FROM dba_recyclebin 
 WHERE owner in ('${schema}');
+
+select 'DROP INDEXTYPE sde.st_spatial_index FORCE;' from dual;	
+--excluir type
+select DISTINCT 'DROP '||TYPE||' '||OWNER||'.'||NAME||' force;' EXCLUIR_TYPES
+from     dba_source where    owner in ('${schema}') and type='TYPE';
+
 "@
     $global:txt =@{}
     $global:txt = $script | sqlplus -s ${user}/${pwd}@${instancia}
@@ -55,4 +61,3 @@ WHERE owner in ('${schema}');
 }
 
 #limpar_schema_oracle -schema "teste" -instancia "teste" -user user1 -pwd teste2
-
